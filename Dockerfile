@@ -16,7 +16,9 @@ RUN pecl channel-update https://pecl.php.net/channel.xml && \
     echo 'extension=swoole.so' > /usr/local/etc/php/conf.d/swoole.ini
 
 RUN docker-php-ext-configure pcntl --enable-pcntl && \
-    docker-php-ext-install pcntl pdo pdo_mysql
+    docker-php-ext-install pcntl && \
+    docker-php-ext-install pdo pdo_mysql && \
+    docker-php-ext-install bcmath
 
 RUN apt-get -y autoremove && \
     apt-get clean && \
