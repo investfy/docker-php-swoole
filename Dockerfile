@@ -2,7 +2,9 @@ FROM php:latest
 
 ENV TZ=UTC
 
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
+    echo $TZ > /etc/timezone && \
+    ln -sns /usr/local/bin/php /usr/bin/php
 
 RUN apt-get update && \
     apt-get install -y g++ zip unzip
@@ -23,3 +25,7 @@ RUN docker-php-ext-configure pcntl --enable-pcntl && \
 RUN apt-get -y autoremove && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN groupadd --force -g 1000 www && \
+    useradd -ms /bin/bash --no-user-group -g 1000 -u 1000 www && \
+    mkdir /app && chown -R www:www /app
